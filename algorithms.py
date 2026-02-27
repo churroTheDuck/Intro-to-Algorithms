@@ -38,6 +38,19 @@ def radixSort(unsortedList):
             sortedList.extend(bucket)
     return sortedList
 
+def bogoSort(unsortedList):
+    sortedList = unsortedList
+    def sorted():
+        for i in range(0, len(sortedList) - 1):
+            if (sortedList[i] > sortedList[i + 1]):
+                return False
+        return True
+    while True:
+        if sorted() == False:
+            random.shuffle(sortedList)
+        else:
+            return sortedList
+
 # Testing functions
 def test(algorithm, size):
     cprint(algorithm, "blue", attrs=["bold"])
@@ -52,6 +65,7 @@ def test(algorithm, size):
     cprint(f"End - Start = {end - start} seconds", "white", "on_yellow")
 
 # Testing
-test(insertionSort, 100)
-test(countingSort, 100)
-test(radixSort, 100)
+#test(insertionSort, 100)
+#test(countingSort, 100)
+#test(radixSort, 100)
+#test(bogoSort, 10)
