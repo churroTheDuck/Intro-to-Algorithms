@@ -1,3 +1,4 @@
+import time
 import random
 
 class Node:
@@ -57,10 +58,31 @@ def print_bst(root):
             
 # end AI code section
 
-bigTree = Node(5)
-unsortedList = list(range(10))
-random.shuffle(unsortedList)
-for val in unsortedList:
-    bigTree.insert(val)
-print_bst(bigTree)
-print(f"Minimum value: {bigTree.findMin()}")
+sizes = [50000, 100000, 150000, 200000, 250000]
+import time
+import random
+
+
+print("Insert timing:")
+for n in sizes:
+    values = list(range(n))
+    random.shuffle(values)
+    root = Node(values[0])
+    start = time.time()
+    for v in values[1:]:
+        root.insert(v)
+    end = time.time()
+    print(f"n = {n}, time = {end - start} seconds")
+    
+print("\nfindMin timing:")
+for n in sizes:
+    values = list(range(n))
+    random.shuffle(values)
+    root = Node(values[0])
+    for v in values[1:]:
+        root.insert(v)
+    start = time.time()
+    for v in values[1:]:
+        root.findMin()
+    end = time.time()
+    print(f"n = {n}, time = {end - start} seconds")
