@@ -1,5 +1,6 @@
 import time
 import random
+import matplotlib.pyplot as plt
 
 class Node:
     def __init__(self, nodeValue, left = -1, right = -1):
@@ -67,10 +68,11 @@ def print_bst(root):
             
 # end AI code section
 
-sizes = [50000, 100000, 150000, 200000, 250000]
+insert_x = []
+insert_y = []
 
 print("Insert timing:")
-for n in sizes:
+for n in range(10000,100000,1000):
     values = list(range(n))
     random.shuffle(values)
     root = Node(values[0])
@@ -78,10 +80,14 @@ for n in sizes:
     for v in values[1:]:
         root.insert(v)
     end = time.time()
-    print(f"n = {n}, time = {end - start} seconds")
+    insert_x.append(n)
+    insert_y.append(end - start)
     
+findmin_x = []
+findmin_y = []
+
 print("\nfindMin timing:")
-for n in sizes:
+for n in range(10000,100000,1000):
     values = list(range(n))
     random.shuffle(values)
     root = Node(values[0])
@@ -91,11 +97,22 @@ for n in sizes:
     for v in values[1:]:
         root.findMin()
     end = time.time()
-    print(f"n = {n}, time = {end - start} seconds")
+    findmin_x.append(n)
+    findmin_y.append(end - start)
+    
+plt.plot(insert_x, insert_y, label="Insert")
+plt.plot(findmin_x, findmin_y, label="FindMin")
+
+plt.xlabel("Number of Nodes")
+plt.ylabel("Time (seconds)")
+plt.title("BST Performance")
+plt.legend()
+
+plt.show()
 
 values = list(range(100))
 random.shuffle(values)
 root = Node(values[0])
 for v in values[1:]:
     root.insert(v)
-print(root.sort())
+print(f"Sorted tree: {root.sort()}")
