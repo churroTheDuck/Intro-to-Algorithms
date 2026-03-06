@@ -25,6 +25,15 @@ class Node:
             return self.left.findMin()
         else:
             return self.nodeValue
+    def sort(self):
+        sortedList = []
+        if (self.left != -1):
+            sortedList.extend(self.left.sort())
+        sortedList.append(self.nodeValue)
+        if (self.right != -1):
+            sortedList.extend(self.right.sort())
+        return sortedList
+            
 # the following code was by AI, not by me
 
 def print_tree(node, prefix="", is_left=True):
@@ -59,9 +68,6 @@ def print_bst(root):
 # end AI code section
 
 sizes = [50000, 100000, 150000, 200000, 250000]
-import time
-import random
-
 
 print("Insert timing:")
 for n in sizes:
@@ -86,3 +92,10 @@ for n in sizes:
         root.findMin()
     end = time.time()
     print(f"n = {n}, time = {end - start} seconds")
+
+values = list(range(100))
+random.shuffle(values)
+root = Node(values[0])
+for v in values[1:]:
+    root.insert(v)
+print(root.sort())
