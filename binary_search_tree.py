@@ -9,18 +9,18 @@ class Node:
     def insert(self, value):
         if value < self.nodeValue:
             self.balanceFactor -= 1
-            if self.left != -1:
+            if (self.left != -1):
                 self.left.insert(value)
             else:
                 self.left = Node(value)
         else:
             self.balanceFactor += 1
-            if self.right != -1:
+            if (self.right != -1):
                 self.right.insert(value)
             else:
                 self.right = Node(value)
     def findMin(self):
-        if self.left != -1:
+        if (self.left != -1):
             return self.left.findMin()
         else:
             return self.nodeValue
