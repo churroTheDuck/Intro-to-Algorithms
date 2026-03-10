@@ -1,6 +1,9 @@
 import time
 import random
 import matplotlib.pyplot as plt
+import sys
+
+sys.setrecursionlimit(10000)
 
 class Node:
     def __init__(self, nodeValue, left = -1, right = -1):
@@ -71,10 +74,9 @@ def print_bst(root):
 insert_x = []
 insert_y = []
 
-print("Insert timing:")
-for n in range(10000,100000,1000):
+print("Timing insert()")
+for n in range(1,10000,1000):
     values = list(range(n))
-    random.shuffle(values)
     root = Node(values[0])
     start = time.time()
     for v in values[1:]:
@@ -86,20 +88,18 @@ for n in range(10000,100000,1000):
 findmin_x = []
 findmin_y = []
 
-print("\nfindMin timing:")
-for n in range(10000,100000,1000):
+print("Timing findMin()")
+for n in range(1,10000,1000):
     values = list(range(n))
-    random.shuffle(values)
     root = Node(values[0])
     for v in values[1:]:
         root.insert(v)
     start = time.time()
-    for v in values[1:]:
-        root.findMin()
+    root.findMin()
     end = time.time()
     findmin_x.append(n)
-    findmin_y.append(end - start)
-    
+    findmin_y.append((end - start) * 100000)
+
 plt.plot(insert_x, insert_y, label="Insert")
 plt.plot(findmin_x, findmin_y, label="FindMin")
 
