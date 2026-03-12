@@ -1,6 +1,6 @@
 pages = []
 
-class page:
+class Page:
     def __init__(self, name, pageRank):
         self.name = name
         self.links = []
@@ -21,19 +21,23 @@ class page:
         print(self.name)
 d = 0.85
 def pageRank():
+    print("Ranking pages...")
+    newRanks = {}
     for page in pages:
         newPageRank = 0
         for backlink in page.backlinks:
              newPageRank += backlink.pageRank / len(backlink.links)
-        page.pageRank = (1 - d) + d * newPageRank
-        print(page.pageRank)
+        newRanks[page] = (1 - d) + d * newPageRank
+    for page in pages:
+        page.pageRank = newRanks[page]
+        print(f"Name: {page.name}, Rank: {page.pageRank}")
 
 n = 4
 
-page0 = page("0.com", 1 / n)
-page1 = page("1.com", 1 / n)
-page2 = page("2.com", 1 / n)
-page3 = page("3.com", 1 / n)
+page0 = Page("0.com", 1 / n)
+page1 = Page("1.com", 1 / n)
+page2 = Page("2.com", 1 / n)
+page3 = Page("3.com", 1 / n)
 
 page1.add_link(page0)
 page2.add_link(page0)
@@ -44,4 +48,5 @@ pages.append(page1)
 pages.append(page2)
 pages.append(page3)
 
-pageRank()
+for i in range(20):
+    pageRank()
