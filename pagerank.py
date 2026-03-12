@@ -7,10 +7,12 @@ class Page:
         self.backlinks = []
         self.pageRank = pageRank
     def add_link(self, target_page):
-        self.links.append(target_page)
-        target_page.add_back_link(self)
+        if (target_page != self and target_page not in self.links):
+            self.links.append(target_page)
+            target_page.add_back_link(self)
     def add_back_link(self, target_page):
-        self.backlinks.append(target_page)
+        if target_page not in self.backlinks:
+            self.backlinks.append(target_page)
     def print_links(self):
         for page in self.links:
             print (page.name + ", ")
@@ -27,17 +29,18 @@ def pageRank():
         newPageRank = 0
         for backlink in page.backlinks:
              newPageRank += backlink.pageRank / len(backlink.links)
-        newRanks[page] = (1 - d) + d * newPageRank
+        newRanks[page] = (1 - d) / len(pages) + d * newPageRank
     for page in pages:
         page.pageRank = newRanks[page]
         print(f"Name: {page.name}, Rank: {page.pageRank}")
 
-n = 4
+n = 5
 
 page0 = Page("0.com", 1 / n)
 page1 = Page("1.com", 1 / n)
 page2 = Page("2.com", 1 / n)
 page3 = Page("3.com", 1 / n)
+supernode = Page("supernode", 1 / n)
 
 page1.add_link(page0)
 page2.add_link(page0)
@@ -47,6 +50,12 @@ pages.append(page0)
 pages.append(page1)
 pages.append(page2)
 pages.append(page3)
+pages.append(supernode)
+
+for page in pages:
+    page.add_link(supernode)
+for page in pages:
+    supernode.add_link(page)
 
 for i in range(20):
     pageRank()
