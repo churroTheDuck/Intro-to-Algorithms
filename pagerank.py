@@ -1,3 +1,5 @@
+import os
+
 pages = []
 
 class Page:
@@ -32,7 +34,9 @@ def pageRank(iteration):
         newRanks[page] = (1 - d) / len(pages) + d * newPageRank
     for page in pages:
         page.pageRank = newRanks[page]
-        print(f"Name: {page.name}, Rank: {page.pageRank}")
+        print(f"Name: {page.name}, Rank: {page.pageRank:.2f}")
+    term_size = os.get_terminal_size()
+    print('=' * term_size.columns)
 
 n = 5
 
