@@ -22,8 +22,8 @@ class Page:
     def print_name(self):
         print(self.name)
 d = 0.85
-def pageRank():
-    print("Ranking pages...")
+def pageRank(iteration):
+    print(f"Iteration {iteration + 1}")
     newRanks = {}
     for page in pages:
         newPageRank = 0
@@ -58,4 +58,4 @@ for page in pages:
     supernode.add_link(page)
 
 for i in range(20):
-    pageRank()
+    pageRank(i)
