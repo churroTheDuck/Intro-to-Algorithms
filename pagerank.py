@@ -1,4 +1,5 @@
 import os
+import time
 
 pages = []
 
@@ -9,12 +10,11 @@ class Page:
         self.backlinks = []
         self.pageRank = pageRank
     def add_link(self, target_page):
-        if (target_page != self and target_page not in self.links):
+        if (target_page != self):
             self.links.append(target_page)
             target_page.add_back_link(self)
     def add_back_link(self, target_page):
-        if target_page not in self.backlinks:
-            self.backlinks.append(target_page)
+        self.backlinks.append(target_page)
     def print_links(self):
         for page in self.links:
             print (page.name + ", ")
@@ -61,5 +61,8 @@ for page in pages:
 for page in pages:
     supernode.add_link(page)
 
-for i in range(20):
+start = time.time()
+for i in range(10**6):
     pageRank(i)
+end = time.time()
+print(f"End - Start = {end - start} seconds")
