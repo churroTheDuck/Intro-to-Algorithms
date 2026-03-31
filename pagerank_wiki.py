@@ -29,7 +29,6 @@ class Page:
         return f"Page (id: {self.id}, name: {self.name}, links: {self.links})"
 d = 0.85
 def pageRank(iteration):
-    #print(f"Iteration {iteration + 1}")
     newRanks = {}
     for id in pagesDict:
         newPageRank = 0
@@ -38,9 +37,6 @@ def pageRank(iteration):
         newRanks[id] = (1 - d) / pageNumber + d * newPageRank
     for id in pagesDict:
         pagesDict[id].pageRank = newRanks[id]
-        #print(f"Name: {pagesDict[id].name}, Rank: {pagesDict[id].pageRank}")
-    #term_size = os.get_terminal_size()
-    #print('=' * term_size.columns)
 
 df = pd.read_csv("pagerank_wiki_data.csv", sep="\t")
 
