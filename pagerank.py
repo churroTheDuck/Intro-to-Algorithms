@@ -62,7 +62,7 @@ for page in pages:
     supernode.add_link(page)
 
 start = time.time()
-for i in range(10**6):
+for i in range(50):
     pageRank(i)
 end = time.time()
 print(f"End - Start = {end - start} seconds")

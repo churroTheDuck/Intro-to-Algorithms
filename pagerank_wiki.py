@@ -66,7 +66,7 @@ for _, row in df.iterrows():
 # additionally, any pages that are linked to, but do not have a source, are created.
 
 start = time.time()
-for i in range(10):
+for i in range(50):
     pageRank(i)
 
 # coded with ai and Jake
