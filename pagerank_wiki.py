@@ -19,10 +19,10 @@ class Page:
         self.backlinks.append(target_page_id)
     def print_links(self):
         for page in self.links:
-            print (page.name + ", ")
+            print (pagesDict[page].name + ", ")
     def print_backlinks(self):
         for page in self.backlinks:
-            print (page.name + ", ")
+            print (pagesDict[page].name + ", ")
     def print_name(self):
         print(self.name)
     def __repr__(self):
@@ -35,7 +35,7 @@ def pageRank(iteration):
         newPageRank = 0
         for backlink in pagesDict[id].backlinks:
              newPageRank += pagesDict[backlink].pageRank / len(pagesDict[backlink].links)
-        newRanks[id] = (1 - d) / n + d * newPageRank
+        newRanks[id] = (1 - d) / pageNumber + d * newPageRank
     for id in pagesDict:
         pagesDict[id].pageRank = newRanks[id]
         #print(f"Name: {pagesDict[id].name}, Rank: {pagesDict[id].pageRank}")
@@ -45,33 +45,41 @@ def pageRank(iteration):
 df = pd.read_csv("pagerank_wiki_data.csv", sep="\t")
 
 pagesDict = {}
-
-n = len(df.index)
-
-pagesDict[0] = Page(0, "supernode", 1 / n)
+pageNumber = 0
+countingPages = []
 
 for _, row in df.iterrows():
     if (row["page_id_from"] not in pagesDict):
-        pagesDict[row["page_id_from"]] = Page(row["page_id_from"], row["page_title_from"], 1 / n)
-        pagesDict[row["page_id_from"]].add_link(0)
-        pagesDict[0].add_link(row["page_id_from"])
-# first pass creates all the ids and Pages, and adds links to the supernode.
+        countingPages.append(row["page_id_from"])
+for _, row in df.iterrows():
+    if row["page_id_to"] not in pagesDict:
+        countingPages.append(row["page_id_to"])
+#counting
+pageNumber = len(countingPages)
+        
+for _, row in df.iterrows():
+    if (row["page_id_from"] not in pagesDict):
+        pagesDict[row["page_id_from"]] = Page(row["page_id_from"], row["page_title_from"], 1 / pageNumber)
+# first pass creates Pages
 
 for _, row in df.iterrows():
     if row["page_id_to"] not in pagesDict:
-        pagesDict[row["page_id_to"]] = Page(row["page_id_to"], row.get("page_title_to", str(row["page_id_to"])), 1 / n)
-        pagesDict[row["page_id_to"]].add_link(0)
-        pagesDict[0].add_link(row["page_id_to"])
+        pagesDict[row["page_id_to"]] = Page(row["page_id_to"], row.get("page_title_to", str(row["page_id_to"])), 1 / pageNumber)
     pagesDict[row["page_id_from"]].add_link(row["page_id_to"])
 # second pass adds links between the Pages
 # additionally, any pages that are linked to, but do not have a source, are created.
 
 start = time.time()
-for i in range(1000):
+for i in range(10):
     pageRank(i)
 
-for id in pagesDict:
-    print(f"Name: {pagesDict[id].name}, Rank: {pagesDict[id].pageRank}")
+# coded with ai and Jake
+with open("out.txt", "w+") as f:
+    a = ""
+    for id, page in sorted(pagesDict.items(), key=lambda item: item[1].pageRank, reverse=True):
+        a += f"Name: {page.name}, Rank: {page.pageRank}" + "\n"
+    f.write(a)
+# end ai section
 
 end = time.time()
 print(f"End - Start = {end - start} seconds")
