@@ -4,7 +4,7 @@ My Python implementation of PageRank.
 
 ## How do I run this?
 
-First, download the Python code [here](https://github.com/churroTheDuck/Intro-to-Algorithms/raw/refs/heads/main/pagerank.py.).
+First, download the Python file with the project you want to run.
 Then, open your terminal and check if you have Python installed by running the following command:
 ```bash
 python3 --version
