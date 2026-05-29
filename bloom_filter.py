@@ -30,13 +30,14 @@ class BloomFilter:
 
 def testFilter(start,end):
     false_positives = []
+    inputs = 50
 
     for size in range(start,end):
         filter = BloomFilter(size)
         fp = 0
-        for i in range(50):
+        for i in range(inputs):
             filter.insertElement(i)
-        for i in range(50, 100):    
+        for i in range(inputs, inputs * 2):    
             if (filter.checkElement(i)):
                 fp += 1
         false_positives.append(fp)
