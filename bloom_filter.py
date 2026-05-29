@@ -1,19 +1,49 @@
 from copy import deepcopy
+import hashlib
+import matplotlib.pyplot as plt
+import csv
 
-bloom_filter = deepcopy([0] * 1000)
+class BloomFilter:
+    def __init__(self, m):
+        self.m = m
+        self.bloom_filter = [0] * m
 
-def insertElement(element):
-    for i in range(3):
-        bloom_filter[(hash(element) ^ hash(i))  % 1000] = 1
-    
-def containsElement(element):
-    for i in range(3):
-        if bloom_filter[(hash(element) ^ hash(i))  % 1000]:
-            pass
-        else:
-            return False
-    return True
+    def _hashes(self, element):
+        hashes = []
 
-insertElement(64)
-print(containsElement(64))
-print(containsElement(67))
+        for i in range(3):
+            value = f"{element}_{i}".encode()
+            h = int(hashlib.md5(value).hexdigest(), 16)
+            hashes.append(h % self.m)
+
+        return hashes
+
+    def insertElement(self, element):
+        for h in self._hashes(element):
+            self.bloom_filter[h] = 1
+
+    def checkElement(self, element):
+        for h in self._hashes(element):
+            if self.bloom_filter[h] == 0:
+                return False
+        return True
+
+def testFilter(start,end):
+    false_positives = []
+
+    for size in range(start,end):
+        filter = BloomFilter(size)
+        fp = 0
+        for i in range(50):
+            filter.insertElement(i)
+        for i in range(50, 100):    
+            if (filter.checkElement(i)):
+                fp += 1
+        false_positives.append(fp)
+    plt.plot(range(start, end), false_positives)
+    plt.xlabel("Bloom Filter Size")
+    plt.ylabel("False Positives")
+    plt.title("Bloom Filter False Positive Rate")
+    plt.show()
+
+testFilter(1,1000);
